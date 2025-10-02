@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crazy Stitcher</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff;
+      color: #333;
+}
+
+    header {
+      background-color: orange;
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position:sticky;
+      top:0;
+      z-index:1000;
+}
+
+.logo img {
+      height: 60px;
+}
+
+    nav {
+      display: flex;
+      gap: 25px;
+}
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      transition: color 0.3s ease;
+}
+
+    nav a:hover {
+      color: #f0f0f0;
+}
+
+.product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 30px;
+      padding: 40px;
+}
+
+.product-card {
+      border: 1px solid #eee;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      background-color: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+      transform: translateY(-5px);
+}
+
+.product-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 5px;
+}
+
+.product-card h3 {
+      margin: 15px 0 10px;
+      color: orange;
+}
+
+.product-card p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #666;
+}
+
+.product-card a {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 15px;
+      background-color: orange;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+}
+
+    footer {
+      background-color: #222;
+      color: white;
+      padding: 30px;
+      text-align: center;
+}
+
+    footer a {
+      color: orange;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+}
+
+.credit {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #aaa;
+}
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+}
+
+      nav {
+        margin-top: 10px;
+        flex-wrap: wrap;
+}
+
+.product-card img {
+        height: 180px;
+}
+}
+  </style>
+  {% load static %}
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="{% static 'store/images/logo.png' %}" alt="Crazy Stitcher Logo" />
+    </div>
+    <nav>
+      <a href="https://wa.me/7013931477?text='Welcome to Crazy Stitcher, Let us know why you contacted us'">Contact</a>
+      <a href="https://wa.me/7013931477?text='Thank you for using Crazy Stitcher, let us know your order'">Custom Order</a>
+      <a href="{% url 'review' %}">Reviews</a>
+    </nav>
+  </header>
+
+  <div class="product-grid">
+    {% for p in product %}
+    <div class="product-card">
+	    <a href="{{p.pic_url.url}}" target="_blank" alt={{pic.name}}>
+      <img src="{{p.pic_url.url}}" alt="{{p.name}}">
+	    </a>
+      <h3>{{p.name}}</h3>
+      <p><strong>Category:</strong> {{p.category}}</p>
+      <p><strong>Quantity left :</strong>{{p.quantity}}</p>
+      <p>In Stock: {{p.is_available|yesno:"Yes,No"}}</p>
+      <a href="{% url 'buy_product' p.name p.id %}">Buy this product - ₦ {{p.price}}</a>
+    </div>
+    {% empty %}
+    <p>No products available to show</p>
+    {% endfor %}
+  </div>
+
+  <footer>
+    <div>
+      <a href="https://wa.me/7013931477?text='Welcome to Crazy Stitcher, Let us know why you contacted us'">Contact</a>
+      <a href="https://wa.me/7013931477?text='Thank you for using Crazy Stitcher, let us know your order'">Custom Order</a>
+      <a href="{% url 'review' %}">Reviews</a>
+    </div>
+    <div class="credit">&copy; 2025 Crazy Stitcher - All rights Reserved</div>
+  </footer>
+
+</body>
+</html>
